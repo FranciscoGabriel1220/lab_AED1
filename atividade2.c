@@ -11,7 +11,8 @@
 typedef enum {
     MOEDA_BRONZE,
     MOEDA_PRATA,
-    MOEDA_OURO
+    MOEDA_OURO,
+    MOEDA_DIAMANTE,
 } TipoMoeda;
 
 typedef struct {
@@ -29,6 +30,7 @@ Color corDaMoeda(TipoMoeda tipo) {
         case MOEDA_BRONZE: return (Color){160, 90, 40, 255};
         case MOEDA_PRATA:  return (Color){190, 190, 190, 255};
         case MOEDA_OURO:   return GOLD;
+        case MOEDA_DIAMANTE: return BLUE;
         default:           return WHITE;
     }
 }
@@ -39,6 +41,7 @@ int valorDaMoeda(TipoMoeda tipo) {
         case MOEDA_BRONZE: return 5;
         case MOEDA_PRATA:  return 10;
         case MOEDA_OURO:   return 25;
+        case MOEDA_DIAMANTE: return 50;
         default:           return 0;
     }
 }
@@ -46,6 +49,7 @@ int valorDaMoeda(TipoMoeda tipo) {
 /* cria o vetor dinâmico de moedas, sorteando tipo e posição de cada uma */
 Moeda *criarMoedas(int quantidade) {
     Moeda *moedas = (Moeda *)malloc(quantidade * sizeof(Moeda));
+    
     if (moedas == NULL) return NULL;
 
     for (int i = 0; i < quantidade; i++) {
@@ -53,8 +57,15 @@ Moeda *criarMoedas(int quantidade) {
         m->pos      = (Vector2){ GetRandomValue(30, LARGURA_JANELA - 30),
                                   GetRandomValue(30, ALTURA_JANELA - 30) };
         m->raio     = 10.0f;
+        int sorteraridade=GetRandomValue(0,9);
+        if (sorteraridade==0)
+        {
+            m->tipo=MOEDA_DIAMANTE;
+        }else{ 
         m->tipo     = (TipoMoeda)GetRandomValue(MOEDA_BRONZE, MOEDA_OURO);
+    }
         m->valor    = valorDaMoeda(m->tipo);
+        
         m->coletada = false;
     }
     return moedas;
