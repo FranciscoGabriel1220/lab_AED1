@@ -181,6 +181,12 @@ int main(void) {
             }
         }
 reorganizarEntidades(jogador);
+if (IsKeyPressed(KEY_N) && totalEntidades < MAX_ENTIDADES)
+{
+       Vector2 pos = { GetRandomValue(30, LARGURA_JANELA - 30), GetRandomValue(30, ALTURA_JANELA - 30) };
+        adicionarEntidade(criarEntidade(ENTIDADE_ITEM, pos)); 
+}
+
         BeginDrawing();
             ClearBackground(RAYWHITE);
 
@@ -191,7 +197,7 @@ reorganizarEntidades(jogador);
 
             DrawText(TextFormat("Vida: %d   Pontuacao: %d", jogador->vida, pontuacao), 10, 10, 22, DARKGRAY);
             DrawText(TextFormat("Entidades ativas: %d", totalEntidades), 10, 34, 18, GRAY);
-            DrawText("Setas movem | ESPACO atira | ESC sai", 10, ALTURA_JANELA - 25, 16, GRAY);
+            DrawText("Setas movem | ESPACO atira | ESC sai | N faz reaparecer as criaturas", 10, ALTURA_JANELA - 25, 16, GRAY);
 
         EndDrawing();
     }
