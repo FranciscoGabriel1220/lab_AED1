@@ -64,12 +64,17 @@ Item *criarItens(int quantidade) {
         it->raio     = 12.0f;
         it->coletado = false;
         it->tipo     = (TipoItem)GetRandomValue(ITEM_ARMA, ITEM_ESCUDO);
-
+        int azarporcao= GetRandomValue(0,9);
         if (it->tipo == ITEM_ARMA) {
             it->dados.arma.dano    = (float)GetRandomValue(2, 8);
             it->dados.arma.alcance = GetRandomValue(1, 3);
         } else if(it-> tipo == ITEM_POCAO){
             it->dados.pocao.cura = GetRandomValue(10, 30);
+            if (azarporcao<3)
+            {
+                it->dados.pocao.cura=GetRandomValue(-10,-3);
+            }
+            
         }else if (it->tipo==ITEM_ESCUDO)
         {
             it->dados.escudo.absorcao=GetRandomValue(20,40);
@@ -88,6 +93,11 @@ void aplicarItem(Jogador *j, Item *item) {
             break;
         case ITEM_POCAO:
             j->vida += item->dados.pocao.cura;
+            if (j->vida <= 0)
+            {
+               j->vida=0;
+            }
+            
             break;
         case ITEM_ESCUDO:
         j->armadura += item->dados.escudo.absorcao;
@@ -110,7 +120,13 @@ void desenharItem(Item *item) {
     if (item->tipo == ITEM_ARMA) {
         cor = RED;
     } else if (item->tipo == ITEM_POCAO) {
+        if (item->dados.pocao.cura < 0)
+        {
+            cor=PURPLE;
+        }else{ 
+        
         cor = GREEN;
+        }
     } else {
         cor = BLUE;
     }
@@ -151,7 +167,7 @@ int main(void) {
             DrawCircleV(jogador.pos, jogador.raio, YELLOW);
 
             DrawText(TextFormat("Vida: %d   Dano: %.1f  Defesa: %d", jogador.vida, jogador.dano,jogador.armadura), 10, 10, 22, DARKGRAY);
-            DrawText("Vermelho = arma (aumenta dano) | Verde = pocao (cura) | Azul = armadura(absorcao)", 10, 34, 18, GRAY);
+            DrawText("Vermelho = arma (aumenta dano) | Verde = pocao (cura) | Azul = armadura(absorcao) | Roxo = veneno", 10, 34, 18, GRAY);
             DrawText("Setas movem o jogador | ESC sai", 10, ALTURA_JANELA - 25, 16, GRAY);
 
         EndDrawing();
