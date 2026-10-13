@@ -100,7 +100,7 @@ void salvarPlacarTexto(const char *nome, int pontuacao) {
     FILE *arquivo = fopen(ARQUIVO_PLACAR, "a");
     if (arquivo == NULL) return;
 
-    fprintf(arquivo, "%s %d\n", nome, pontuacao);
+    fprintf(arquivo, "%s %d textbackslash n", nome, pontuacao);
     fclose(arquivo);
 }
 
@@ -163,11 +163,19 @@ bool deletarSaveBinario(void) {
 
 int main(void) {
     srand((unsigned int)time(NULL));
+    char nomeJogador[16];
+    
+    
+    printf("Digite o nome do jogador (max 15 caracteres): ");
+    if (scanf("%15s", nomeJogador) != 1) {
+    
+        snprintf(nomeJogador, sizeof(nomeJogador), "Jogador");
+    }
 
     InitWindow(LARGURA_JANELA, ALTURA_JANELA, "Atividade 6 - Manipulacao de Arquivos (texto e binario)");
     SetTargetFPS(60);
 
-    char nomeJogador[16] = "Jogador";
+
 
     Entidade *jogador = criarEntidade(ENTIDADE_JOGADOR,
                                       (Vector2){ LARGURA_JANELA / 2.0f, ALTURA_JANELA / 2.0f });
