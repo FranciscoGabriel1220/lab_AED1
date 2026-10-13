@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include <string.h>
+
 
 #define LARGURA_JANELA  800
 #define ALTURA_JANELA   600
@@ -12,6 +14,7 @@
 #define TOTAL_ITENS     6
 #define ARQUIVO_PLACAR  "placar.txt"
 #define ARQUIVO_SAVE    "save.bin"
+#define nome 16
 
 typedef enum {
     ENTIDADE_JOGADOR,
@@ -96,11 +99,11 @@ void desenharEntidade(Entidade *e) {
     }
 }
 
-void salvarPlacarTexto(const char *nome, int pontuacao) {
+void salvarPlacarTexto(const char *nomeJogador, int pontuacao) {
     FILE *arquivo = fopen(ARQUIVO_PLACAR, "a");
     if (arquivo == NULL) return;
 
-    fprintf(arquivo, "%s %d textbackslash n", nome, pontuacao);
+    fprintf(arquivo, "%s %d textbackslash n", nomeJogador, pontuacao);
     fclose(arquivo);
 }
 
@@ -163,15 +166,19 @@ bool deletarSaveBinario(void) {
 
 int main(void) {
     srand((unsigned int)time(NULL));
-    char nomeJogador[16];
+    char nomeJogador[nome];
     
     
     printf("Digite o nome do jogador (max 15 caracteres): ");
-    if (scanf("%15s", nomeJogador) != 1) {
-    
-        snprintf(nomeJogador, sizeof(nomeJogador), "Jogador");
-    }
-
+    fgets(nomeJogador,nome,stdin);
+    int verificadorName=strlen(nomeJogador);
+ if (verificadorName<1||verificadorName>15)
+{
+    printf("nome invalido...sao no minimo 1 e no maximo 15 caracteres\n");
+    exit(1);
+}
+nomeJogador[strcspn(nomeJogador, "\n")]='\0';
+   
     InitWindow(LARGURA_JANELA, ALTURA_JANELA, "Atividade 6 - Manipulacao de Arquivos (texto e binario)");
     SetTargetFPS(60);
 
@@ -252,8 +259,8 @@ int main(void) {
                 desenharEntidade(vetorEntidades[i]);
             }
 
-            DrawText(TextFormat("Vida: %d   Pontuacao: %d   Recorde: %d",
-                                 jogador->vida, pontuacao, melhorPontuacao), 10, 10, 22, DARKGRAY);
+            DrawText(TextFormat("Vida: %d   Pontuacao: %s : %d   Recorde: %d",
+                                 jogador->vida, nomeJogador, pontuacao, melhorPontuacao), 10, 10, 22, DARKGRAY);
             DrawText("F5 salva placar | F6 salva jogo | F9 carrega | DEL apaga save",
                      10, 34, 18, GRAY);
             DrawText("Setas movem o jogador | ESC sai", 10, ALTURA_JANELA - 25, 16, GRAY);
