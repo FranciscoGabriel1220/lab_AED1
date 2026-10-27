@@ -80,7 +80,7 @@ int main(void) {
             DrawText(TextFormat("Entidades no inventario: %d", inventarioTotal(inventario)), 10, 34, 18, GRAY);
             DrawText("Setas movem | ESPACO atira | ESC sai", 10, ALTURA_JANELA - 25, 16, GRAY);
             
-            if (inventarioEstaCheio(inventario)) {
+            if (inventarioEstaCheio(inventario)==true) {
                 DrawText("O inventario esta cheio!", 10, 58, 18, RED);
             }
             DrawText(TextFormat("Total de itens: %d", inventarioContarPorTipo(inventario, ENTIDADE_ITEM)), 10, 72, 18, GRAY);
